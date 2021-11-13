@@ -11,7 +11,6 @@ builds:
       - freebsd
     goarch:
       - amd64
-      - arm
       - arm64
     mod_timestamp: '{{ .CommitTimestamp }}'
   - main: ./cmd/micromdm
@@ -25,15 +24,8 @@ builds:
       - freebsd
     goarch:
       - amd64
-      - arm
       - arm64
     mod_timestamp: '{{ .CommitTimestamp }}'
-dockers:
-  - image_templates:
-#    - "docker.io/myuser/myimage:{{ .Tag }}"
-#    - "docker.io/myuser/myimage:latest"
-    - "gcr.io/networkpanic/micromdm:{{ .Tag }}"
-    - "gcr.io/networkpanic/micromdm:latest"
 checksum:
   name_template: '{{ .ProjectName }}_checksums.txt'
 changelog:

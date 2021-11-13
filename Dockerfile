@@ -11,7 +11,7 @@ ENV CGO_ENABLED=0 \
 
 COPY . .
 
-RUN make deps
+RUN ls -lah
 RUN make
 
 
