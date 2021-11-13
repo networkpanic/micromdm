@@ -30,7 +30,7 @@ jobs:
         run: |
           docker buildx build \
            --platform linux/amd64,linux/arm,linux/arm64 \
-           --tag ghcr.io/micromdm/micromdm:latest \
-           --tag ghcr.io/micromdm/micromdm:${{ github.event.release.tag_name }} \
+           --tag ghcr.io/{{ github.repository_owner }}/micromdm:latest \
+           --tag ghcr.io/{{ github.repository_owner }}/micromdm:${{ github.event.release.tag_name }} \
            --push \
            .
