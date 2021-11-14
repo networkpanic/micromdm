@@ -13,8 +13,8 @@ COPY . .
 
 RUN apk --update add ca-certificates git
 
-RUN go build -o build/linux/micromdm ./cmd/micromdm
-RUN go build -o build/linux/mdmctl ./cmd/mdmctl
+RUN make deps
+RUN make
 
 FROM scratch
 
