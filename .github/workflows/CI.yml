@@ -54,7 +54,6 @@ jobs:
     - name: Run GoReleaser
       uses: goreleaser/goreleaser-action@v2
       with:
-        version: v0.164.0
         args: release --snapshot --rm-dist --skip-publish
 
     - name: Format
