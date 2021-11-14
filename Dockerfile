@@ -11,7 +11,7 @@ ENV CGO_ENABLED=0 \
 
 COPY . .
 
-RUN apk --update add ca-certificates git
+RUN apk --update add ca-certificates git make
 
 RUN make deps
 RUN make
