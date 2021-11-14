@@ -84,6 +84,11 @@ docker_manifests:
   - ghcr.io/networkpanic/{{.ProjectName}}:{{ .Tag }}-amd64
   - ghcr.io/networkpanic/{{.ProjectName}}:{{ .Tag }}-arm64
 
+- name_template: ghcr.io/networkpanic/{{.ProjectName}}:latest
+  image_templates:
+  - ghcr.io/networkpanic/{{.ProjectName}}:{{ .Tag }}-amd64
+  - ghcr.io/networkpanic/{{.ProjectName}}:{{ .Tag }}-arm64
+
 nfpms:
   - formats:
       - apk
