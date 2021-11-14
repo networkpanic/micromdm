@@ -1,16 +1,6 @@
-FROM alpine:latest as builder
+FROM alpine:latest
 
-WORKDIR /go/src/github.com/micromdm/micromdm/
-
-COPY . .
-
-RUN apk --update add ca-certificates
-
-FROM scratch
-
-COPY --from=builder /go/src/github.com/micromdm/micromdm/micromdm /usr/bin/
-COPY --from=builder /go/src/github.com/micromdm/micromdm/mdmctl /usr/bin/
-COPY --from=builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
+COPY . /usr/bin/
 
 EXPOSE 80 443
 VOLUME ["/var/db/micromdm"]
