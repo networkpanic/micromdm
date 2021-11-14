@@ -110,7 +110,6 @@ release-zip: xp-micromdm xp-mdmctl
 	zip -r micromdm_${VERSION}.zip build/
 
 docker-build:
-	GOOS=linux CGO_ENABLED=0 go build -o build/linux/micromdm  -ldflags ${BUILD_VERSION} ./cmd/micromdm
 	docker build -t ${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG} .
 
 docker-tag: docker-build
@@ -149,4 +148,3 @@ db-migrate:
 define goose_up
 	cd ./pg/migrations && goose postgres "host=${PG_HOST} port=5432 user=micromdm dbname=$(1) password=micromdm sslmode=disable" up
 endef
-
