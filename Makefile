@@ -149,4 +149,3 @@ db-migrate:
 define goose_up
 	cd ./pg/migrations && goose postgres "host=${PG_HOST} port=5432 user=micromdm dbname=$(1) password=micromdm sslmode=disable" up
 endef
-

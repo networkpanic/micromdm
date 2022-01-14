@@ -1,0 +1,121 @@
+project_name: micromdm
+builds:
+  - main: ./cmd/mdmctl
+    env: [CGO_ENABLED=0]
+    id: "mdmctl"
+    binary: mdmctl
+    goos:
+      - linux
+      - windows
+      - darwin
+      - freebsd
+    goarch:
+      - amd64
+      - arm64
+    mod_timestamp: '{{ .CommitTimestamp }}'
+    ldflags:
+      - -X github.com/micromdm/go4/version.appName={{ .ProjectName }}
+      - -X github.com/micromdm/go4/version.version={{.Version}}
+      - -X github.com/micromdm/go4/version.branch={{.Branch}}
+      - -X github.com/micromdm/go4/version.buildUser=goreleaser
+      - -X github.com/micromdm/go4/version.buildDate={{.Date}}
+      - -X github.com/micromdm/go4/version.revision={{.ShortCommit}}
+      - -X github.com/micromdm/go4/version.goVersion=1.17
+      - -X github.com/micromdm/micromdm/dep.version={{.Version}}
+
+  - main: ./cmd/micromdm
+    env: [CGO_ENABLED=0]
+    id: "micromdm"
+    binary: micromdm
+    goos:
+      - linux
+      - windows
+      - darwin
+      - freebsd
+    goarch:
+      - amd64
+      - arm64
+    mod_timestamp: '{{ .CommitTimestamp }}'
+    ldflags:
+      - -X github.com/micromdm/go4/version.appName={{ .ProjectName }}
+      - -X github.com/micromdm/go4/version.version={{.Version}}
+      - -X github.com/micromdm/go4/version.branch={{.Branch}}
+      - -X github.com/micromdm/go4/version.buildUser=goreleaser
+      - -X github.com/micromdm/go4/version.buildDate={{.Date}}
+      - -X github.com/micromdm/go4/version.revision={{.ShortCommit}}
+      - -X github.com/micromdm/go4/version.goVersion=1.17
+      - -X github.com/micromdm/micromdm/dep.version={{.Version}}
+
+universal_binaries:
+- replace: true
+  name_template: micromdm
+  id: "micromdm"
+
+- replace: true
+  name_template: mdmctl
+  id: "mdmctl"
+
+archives:
+  - format: tar.gz
+    format_overrides:
+      - goos: windows
+        format: zip
+
+dockers:
+- image_templates:
+  - "ghcr.io/micromdm/{{.ProjectName}}:{{ .Tag }}-amd64"
+  use: buildx
+  goarch: amd64
+  dockerfile: Dockerfile.goreleaser
+  build_flag_templates:
+  - "--platform=linux/amd64"
+
+- image_templates:
+  - "ghcr.io/micromdm/{{.ProjectName}}:{{ .Tag }}-arm64"
+  use: buildx
+  goarch: arm64
+  dockerfile: Dockerfile.goreleaser
+  build_flag_templates:
+  - "--platform=linux/arm64"
+
+docker_manifests:
+- name_template: ghcr.io/micromdm/{{.ProjectName}}:{{ .Tag }}
+  image_templates:
+  - ghcr.io/micromdm/{{.ProjectName}}:{{ .Tag }}-amd64
+  - ghcr.io/micromdm/{{.ProjectName}}:{{ .Tag }}-arm64
+
+- name_template: ghcr.io/micromdm/{{.ProjectName}}:latest
+  image_templates:
+  - ghcr.io/micromdm/{{.ProjectName}}:{{ .Tag }}-amd64
+  - ghcr.io/micromdm/{{.ProjectName}}:{{ .Tag }}-arm64
+
+nfpms:
+  - formats:
+      - apk
+      - deb
+      - rpm
+    dependencies:
+      - ca-certificates
+    id: micromdm
+    replacements:
+      amd64: x86_64
+      darwin: macos
+    bindir: /usr/local/bin/
+    homepage: https://github.com/micromdm/micromdm
+    description: MicroMDM - a devops friendly MDM server
+    maintainer: Martin Friedrich <npanic@br0.space>
+    vendor: Micromdm
+    license: MIT
+
+checksum:
+  name_template: '{{ .ProjectName }}_checksums.txt'
+
+changelog:
+  sort: asc
+  filters:
+    exclude:
+    - '^docs:'
+    - '^test:'
+    - Merge pull request
+    - Merge branch
+    - go mod tidy
